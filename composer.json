@@ -1,0 +1,51 @@
+{
+  "name": "backendtea/arraywrapper",
+  "description": "A wrapper for arrays, allowing you to extract meta information",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "BackEndTea",
+      "email": "gertp93@gmail.com"
+    }
+  ],
+  "config": {
+   "sort-packages": true,
+    "platform": {
+      "php": "7.0"
+    }
+  },
+  "require": {
+    "php": "^7.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.9",
+    "infection/infection": "^0.6",
+    "phpunit/phpunit": "^6.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "BackEndTea\\ArrayMeta\\" : "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BackEndTea\\ArrayMeta\\Test\\": "test/"
+    }
+  },
+  "scripts": {
+    "php-cs": "vendor/bin/php-cs-fixer fix --verbose --diff --ansi",
+    "project-test": "vendor/bin/phpunit  --testsuite project",
+    "test": "vendor/bin/phpunit --testsuite unit",
+    "infection": "vendor/bin/infection --min-msi=75",
+    "style": [
+      "@php-cs",
+      "@project-test"
+    ],
+    "all-checks": [
+      "@style",
+      "@test",
+      "@infection"
+    ]
+  }
+}
