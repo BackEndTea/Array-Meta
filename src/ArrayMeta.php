@@ -8,6 +8,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use OutOfBoundsException;
 
 final class ArrayMeta implements
     ArrayAccess,
@@ -30,26 +31,25 @@ final class ArrayMeta implements
     //region Array functions
     public function offsetExists($key): bool
     {
-        return isset($this->items[$key]);
+        return $this->has($key);
     }
 
+    /**
+     * @throws OutOfBoundsException
+     */
     public function offsetGet($key)
     {
-        return $this->items[$key];
+        return $this->get($key);
     }
 
     public function offsetSet($key, $value)
     {
-        if (\is_null($key)) {
-            $this->items[] = $value;
-        } else {
-            $this->items[$key] = $value;
-        }
+        $this->set($key, $value);
     }
 
     public function offsetUnset($key)
     {
-        unset($this->items[$key]);
+        $this->remove($key);
     }
 
     public function count(): int
@@ -65,6 +65,44 @@ final class ArrayMeta implements
     public function toArray(): array
     {
         return $this->items;
+    }
+
+    //endregion
+
+    //region Array Aliases
+
+    public function has($key): bool
+    {
+        return isset($this->items[$key]);
+    }
+
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function get($key)
+    {
+        if (!$this->has($key)) {
+            throw new OutOfBoundsException();
+        }
+        return $this->items[$key];
+    }
+
+    public function set($key, $value = null)
+    {
+        if (\func_num_args() === 1) {
+            $value = $key;
+            $key = null;
+        }
+        if (\is_null($key)) {
+            $this->items[] = $value;
+        } else {
+            $this->items[$key] = $value;
+        }
+    }
+
+    public function remove($key)
+    {
+        unset($this->items[$key]);
     }
 
     //endregion
