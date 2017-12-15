@@ -106,4 +106,20 @@ final class ArrayMeta implements
     }
 
     //endregion
+
+    //region Array key functions
+
+    /**
+     * Returns a new instance with the array keys changed to upper or lower case
+     *
+     * @param int $case CASE_LOWER (default)or CASE_UPPER
+     *
+     * @return ArrayMeta
+     */
+    public function changeKeyCase(int $case = CASE_LOWER): self
+    {
+        return new self(\array_change_key_case($this->items, $case));
+    }
+
+    //endregion
 }
