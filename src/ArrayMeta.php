@@ -121,5 +121,10 @@ final class ArrayMeta implements
         return new self(\array_change_key_case($this->items, $case));
     }
 
+    public function keys(): self
+    {
+        return new self(\array_keys($this->items));
+    }
+
     //endregion
 }
