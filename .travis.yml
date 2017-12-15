@@ -68,6 +68,7 @@ jobs:
 
       after_script:
         - if [[ "$WITH_COVERAGE" == "true" ]]; then code-climate-after-script; fi
+        - if [[ "$WITH_COVERAGE" == "true" ]]; then bash <(curl -s https://codecov.io/bash); fi
 
     - <<: *TEST
 
