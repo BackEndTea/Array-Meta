@@ -127,4 +127,8 @@ final class ArrayMeta implements
     }
 
     //endregion
+    public function pop()
+    {
+        return \array_pop($this->items);
+    }
 }
