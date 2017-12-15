@@ -141,4 +141,20 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $meta->pop();
         $this->assertSame(['a', 'b', 'c'], $meta->toArray());
     }
+
+    public function testFlipReturnsNewObject()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $flipped = $meta->flip();
+        $this->assertNotSame($meta->toArray(), $flipped->toArray());
+    }
+
+    public function testFlipFlipsKeysAndValues()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $flipped = $meta->flip();
+        $this->assertSame(['a' => 0,'b' => 1,'c' => 2, 'd' => 3], $flipped->toArray());
+    }
 }

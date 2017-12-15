@@ -131,4 +131,9 @@ final class ArrayMeta implements
     {
         return \array_pop($this->items);
     }
+
+    public function flip(): self
+    {
+        return new self(\array_flip($this->items));
+    }
 }
