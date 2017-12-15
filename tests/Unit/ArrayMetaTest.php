@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BackEndTea\ArrayMeta\Test\Unit;
 
 use BackEndTea\ArrayMeta\ArrayMeta;
-use OutOfBoundsException;
+use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 
 /**
  * @covers \BackEndTea\ArrayMeta\ArrayMeta
@@ -37,12 +37,12 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('value', $meta->get('key'));
     }
 
-    public function testGetThrowsOutOfBoundExceptionIfKeyDoesNotExist()
+    public function testGetThrowsKeyNotFoundExceptionIfKeyDoesNotExist()
     {
         $array = ['key' => 'value'];
         $meta = new ArrayMeta($array);
 
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(KeyNotFoundException::class);
 
         $meta->get('bread');
     }

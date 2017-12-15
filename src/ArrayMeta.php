@@ -6,9 +6,9 @@ namespace BackEndTea\ArrayMeta;
 
 use ArrayAccess;
 use ArrayIterator;
+use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 use Countable;
 use IteratorAggregate;
-use OutOfBoundsException;
 
 final class ArrayMeta implements
     ArrayAccess,
@@ -35,7 +35,7 @@ final class ArrayMeta implements
     }
 
     /**
-     * @throws OutOfBoundsException
+     * @throws KeyNotFoundException
      */
     public function offsetGet($key)
     {
@@ -77,12 +77,12 @@ final class ArrayMeta implements
     }
 
     /**
-     * @throws OutOfBoundsException
+     * @throws KeyNotFoundException
      */
     public function get($key)
     {
         if (!$this->has($key)) {
-            throw new OutOfBoundsException();
+            throw KeyNotFoundException::keyNotFound($key);
         }
         return $this->items[$key];
     }
