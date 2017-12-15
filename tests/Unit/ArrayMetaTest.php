@@ -117,4 +117,13 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('value2', $meta['BLA']);
         $this->assertFalse(isset($meta['keY']));
     }
+
+    public function testKeysReturnsTheKeys()
+    {
+        $array = ['key' => 'value', 'bla' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $keys = $meta->keys();
+        $this->assertSame('key', $keys[0]);
+        $this->assertSame('bla', $keys[1]);
+    }
 }
