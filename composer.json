@@ -34,6 +34,7 @@
     }
   },
   "scripts": {
+    "coverage": "vendor/bin/phpunit --testsuite unit --coverage-html log",
     "php-cs": "vendor/bin/php-cs-fixer fix --verbose --diff --ansi",
     "project-test": "vendor/bin/phpunit  --testsuite project",
     "test": "vendor/bin/phpunit --testsuite unit",
