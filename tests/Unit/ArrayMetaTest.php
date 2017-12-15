@@ -86,4 +86,35 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
     }
 
     //endregion
+
+    public function testChangeKeyCaseReturnsANewInstance()
+    {
+        $array = ['keY' => 'value', 'bLa' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $new = $meta->changeKeyCase(CASE_LOWER);
+        $this->assertInstanceOf(ArrayMeta::class, $new);
+        $this->assertNotSame($meta, $new);
+    }
+
+    public function testChangeKeyCaseWithCaseLowerReturnsLowerCasedVersion()
+    {
+        $array = ['keY' => 'value', 'bLa' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $meta = $meta->changeKeyCase(CASE_LOWER);
+
+        $this->assertSame('value', $meta['key']);
+        $this->assertSame('value2', $meta['bla']);
+        $this->assertFalse(isset($meta['keY']));
+    }
+
+    public function testChangeKeyCaseWithCaseUpperReturnsLowerCasedVersion()
+    {
+        $array = ['keY' => 'value', 'bLa' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $meta = $meta->changeKeyCase(CASE_UPPER);
+
+        $this->assertSame('value', $meta['KEY']);
+        $this->assertSame('value2', $meta['BLA']);
+        $this->assertFalse(isset($meta['keY']));
+    }
 }
