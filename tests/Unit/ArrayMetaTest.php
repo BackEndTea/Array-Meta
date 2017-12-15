@@ -126,4 +126,19 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('key', $keys[0]);
         $this->assertSame('bla', $keys[1]);
     }
+
+    public function testPopReturnsTheLastItem()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $this->assertSame('d', $meta->pop());
+    }
+
+    public function testPopChangesCurrentArray()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $meta->pop();
+        $this->assertSame(['a', 'b', 'c'], $meta->toArray());
+    }
 }
