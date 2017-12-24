@@ -157,4 +157,28 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $flipped = $meta->flip();
         $this->assertSame(['a' => 0,'b' => 1,'c' => 2, 'd' => 3], $flipped->toArray());
     }
+
+    public function testPushAppendsANewValue()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $meta->push('e');
+        $this->assertSame('e', $meta[4]);
+    }
+
+    public function testPushReturnsNewArrayLength()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $size = $meta->push('e');
+        $this->assertSame(5, $size);
+    }
+
+    public function testPushWorksWithKeys()
+    {
+        $array = ['key' => 'value', 'bla' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $meta->push('hello');
+        $this->assertSame('hello', $meta[0]);
+    }
 }

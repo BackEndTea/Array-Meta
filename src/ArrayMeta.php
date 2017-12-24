@@ -136,4 +136,16 @@ final class ArrayMeta implements
     {
         return new self(\array_flip($this->items));
     }
+
+    /**
+     * @param mixed $value value to append
+     *
+     * @return int length of the new array
+     *
+     * @see http://php.net/manual/en/function.array-push.php
+     */
+    public function push($value): int
+    {
+        return \array_push($this->items, $value);
+    }
 }
