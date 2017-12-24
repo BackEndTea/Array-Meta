@@ -202,4 +202,9 @@ final class ArrayMeta implements
     {
         return $this->search($value, true);
     }
+
+    public function reverse(bool $preserveKeys = false): self
+    {
+        return new self(\array_reverse($this->items, $preserveKeys));
+    }
 }
