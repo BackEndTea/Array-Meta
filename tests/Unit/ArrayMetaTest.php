@@ -181,4 +181,29 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $meta->push('hello');
         $this->assertSame('hello', $meta[0]);
     }
+
+    public function testUniqueReturnsANewObject()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $unique =$meta->unique();
+        $this->assertNotSame($unique, $meta);
+    }
+
+    public function testUniqueReturnsTheSameValuesIfNothingIsChanged()
+    {
+        $array = ['a', 'b', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $unique =$meta->unique();
+        $this->assertSame($meta->toArray(), $unique->toArray());
+    }
+
+    public function testUniqueRemovesDuplicates()
+    {
+        $array = ['a', 'a', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+        $unique = $meta->unique();
+
+        $this->assertSame([0 => 'a', 2 => 'c', 3 => 'd'], $unique->toArray());
+    }
 }
