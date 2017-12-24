@@ -6,6 +6,7 @@ namespace BackEndTea\ArrayMeta\Test\Unit;
 
 use BackEndTea\ArrayMeta\ArrayMeta;
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
+use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 
 /**
  * @covers \BackEndTea\ArrayMeta\ArrayMeta
@@ -205,5 +206,75 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $unique = $meta->unique();
 
         $this->assertSame([0 => 'a', 2 => 'c', 3 => 'd'], $unique->toArray());
+    }
+
+    public function testSearchReturnsTheKey()
+    {
+        $array = ['a', 'a', 'c', 'd'];
+        $meta = new ArrayMeta($array);
+
+        $key = $meta->search('a');
+
+        $this->assertSame(0, $key);
+    }
+
+    public function testSearchWorksWhenKeysAreSet()
+    {
+        $array = ['key' => 'value', 'bla' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $key = $meta->search('value');
+
+        $this->assertSame('key', $key);
+    }
+
+    public function testSearchThrowsAValueNotFoundExceptionIfValueIsNotFound()
+    {
+        $array = ['key' => 'value', 'bla' => 'value2'];
+        $meta = new ArrayMeta($array);
+        $this->expectException(ValueNotFoundException::class);
+        $this->expectExceptionMessage('Value "a" not set.');
+        $meta->search('a');
+    }
+
+    public function testSearchDefaultsToNonStrictSearch()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $key = $meta->search(3);
+        $this->assertSame(3, $key);
+    }
+
+    public function testSearchWorksWithStrictSearch()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $this->expectException(ValueNotFoundException::class);
+        $this->expectExceptionMessage('Value "3" not set.');
+        $meta->search(3, true);
+    }
+
+    public function testSearchWorksCorrectlyIfItIsSetToNotStrict()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $key = $meta->search(3, false);
+        $this->assertSame(3, $key);
+    }
+
+    public function testSearchStrictSearchesInAStrictManner()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $this->expectException(ValueNotFoundException::class);
+        $this->expectExceptionMessage('Value "3" not set.');
+        $meta->searchStrict(3);
+    }
+
+    public function testSearchStrictWorksCorrectlyIfTypesAreCorrect()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $key = $meta->searchStrict('3');
+        $this->assertSame(3, $key);
     }
 }

@@ -7,6 +7,7 @@ namespace BackEndTea\ArrayMeta;
 use ArrayAccess;
 use ArrayIterator;
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
+use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 use Countable;
 use IteratorAggregate;
 
@@ -165,5 +166,40 @@ final class ArrayMeta implements
     public function unique($sort = SORT_STRING): self
     {
         return new self(\array_unique($this->items, $sort));
+    }
+
+    /**
+     * Searches an a value and returns its key
+     *
+     * @param mixed $value  value to search for
+     * @param bool  $strict whether to check type as well
+     *
+     * @throws ValueNotFoundException
+     *
+     * @return int|string key for the value
+     */
+    public function search($value, bool $strict = false)
+    {
+        if (($return =  \array_search($value, $this->items, $strict)) === false) {
+            throw ValueNotFoundException::valueNotFound($value);
+        }
+
+        return $return;
+    }
+
+    /**
+     * Searches for a value, and checks for type
+     *
+     * @param $value
+     *
+     * @throws ValueNotFoundException
+     *
+     * @return int|string
+     *
+     * @see search()
+     */
+    public function searchStrict($value)
+    {
+        return $this->search($value, true);
     }
 }
