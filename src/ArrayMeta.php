@@ -148,4 +148,22 @@ final class ArrayMeta implements
     {
         return \array_push($this->items, $value);
     }
+
+    /**
+     * Make a new array of all the unique values
+     *
+     * @param int $sort type of sorting to do, options are:
+     *                  SORT_REGULAR - compare items normally (don't change types)
+     *                  SORT_NUMERIC - compare items numerically
+     *                  SORT_STRING - compare items as strings
+     *                  SORT_LOCALE_STRING - compare items as strings, based on the current locale
+     *
+     * @see http://php.net/manual/en/function.array-unique.php
+     *
+     * @return self
+     */
+    public function unique($sort = SORT_STRING): self
+    {
+        return new self(\array_unique($this->items, $sort));
+    }
 }
