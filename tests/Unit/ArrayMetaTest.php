@@ -277,4 +277,20 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $key = $meta->searchStrict('3');
         $this->assertSame(3, $key);
     }
+
+    public function testReverseReverses()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $reversed = $meta->reverse();
+        $this->assertSame(['3', '2', '1', '0'], $reversed->toArray());
+    }
+
+    public function testReversesPreservesKeysIfItIsToldSo()
+    {
+        $array = ['0', '1', '2', '3'];
+        $meta = new ArrayMeta($array);
+        $reversed = $meta->reverse(true);
+        $this->assertSame([3 => '3', 2 => '2', 1 => '1',  0 => '0'], $reversed->toArray());
+    }
 }
