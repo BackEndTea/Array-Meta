@@ -6,6 +6,9 @@ namespace BackEndTea\ArrayMeta\Test\Exception;
 
 use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 
+/**
+ * @covers \BackEndTea\ArrayMeta\Exception\ValueNotFoundException
+ */
 class ValueNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsInstanceOfRuntimeException()

@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace BackEndTea\ArrayMeta\Exception;
 
-class ValueNotFoundException extends \RuntimeException
+final class ValueNotFoundException extends \RuntimeException
 {
+    /**
+     * @param mixed $value
+     *
+     * @return self
+     */
     public static function valueNotFound($value): self
     {
         return new self(\sprintf(

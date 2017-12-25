@@ -6,6 +6,9 @@ namespace BackEndTea\ArrayMeta\Test\Exception;
 
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 
+/**
+ * @covers \BackEndTea\ArrayMeta\Exception\KeyNotFoundException
+ */
 class KeyNotFoundExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsInstanceOfRuntimeException()
