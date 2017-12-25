@@ -107,7 +107,7 @@ class ArrayMeta implements
      */
     public function has($key): bool
     {
-        $this->assertKeyIsOfCorrectType($key);
+        \assertValidArrayKey($key);
 
         return isset($this->items[$key]);
     }
@@ -122,7 +122,7 @@ class ArrayMeta implements
      */
     public function get($key)
     {
-        $this->assertKeyIsOfCorrectType($key);
+        \assertValidArrayKey($key);
 
         if (!$this->has($key)) {
             throw KeyNotFoundException::keyNotFound($key);
@@ -147,7 +147,7 @@ class ArrayMeta implements
         if (\is_null($key)) {
             $this->items[] = $value;
         } else {
-            $this->assertKeyIsOfCorrectType($key);
+            \assertValidArrayKey($key);
 
             $this->items[$key] = $value;
         }
@@ -160,7 +160,7 @@ class ArrayMeta implements
      */
     public function remove($key)
     {
-        $this->assertKeyIsOfCorrectType($key);
+        \assertValidArrayKey($key);
 
         unset($this->items[$key]);
     }
@@ -269,17 +269,5 @@ class ArrayMeta implements
     public function reverse(bool $preserveKeys = false): self
     {
         return new self(\array_reverse($this->items, $preserveKeys));
-    }
-
-    /**
-     * @param mixed $key
-     *
-     * @throws IllegalKeyException
-     */
-    private function assertKeyIsOfCorrectType($key)
-    {
-        if (!\is_string($key) && !\is_int($key)) {
-            throw IllegalKeyException::wrongType($key);
-        }
     }
 }
