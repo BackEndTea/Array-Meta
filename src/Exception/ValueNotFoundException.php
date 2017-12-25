@@ -13,9 +13,14 @@ final class ValueNotFoundException extends \RuntimeException
      */
     public static function valueNotFound($value): self
     {
-        return new self(\sprintf(
-            'Value "%s" not set.',
-            $value
-        ));
+        if ((\is_string($value) || \is_numeric($value)) ||
+            \is_object($value) && \method_exists($value, '__toString')
+        ) {
+            return new self(\sprintf(
+                'Value "%s" not set.',
+                $value
+            ));
+        }
+        return new self('Value not set.');
     }
 }
