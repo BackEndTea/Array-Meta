@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BackEndTea\ArrayMeta\Test\Unit;
 
 use BackEndTea\ArrayMeta\ArrayMeta;
+use BackEndTea\ArrayMeta\Exception\IllegalKeyException;
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 
@@ -30,6 +31,15 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($meta->has('bread'));
     }
 
+    public function testHasThrowsIllegalKeyErrorIfKeyIsOfIllegalType()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta->has(new \stdClass());
+    }
+
     public function testGetReturnsValueOfKey()
     {
         $array = ['key' => 'value'];
@@ -46,6 +56,15 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->expectException(KeyNotFoundException::class);
 
         $meta->get('bread');
+    }
+
+    public function testGetThrowsIllegalKeyErrorIfKeyIsOfIllegalType()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta->get(new \stdClass());
     }
 
     public function testSetWillAddNewValueToEndIfKeyIsNotSupplied()
@@ -72,6 +91,15 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('value', $meta[0]);
     }
 
+    public function testSetThrowsIllegalKeyErrorIfKeyIsOfIllegalType()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta->set(new \stdClass(), 'value');
+    }
+
     public function testRemoveRemovesKeyFromArray()
     {
         $array = ['key' => 'value', 'key2' => 'value2'];
@@ -84,6 +112,15 @@ final class ArrayMetaTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('value2', $meta['key2']);
         $this->assertFalse(isset($meta['key']));
+    }
+
+    public function testRemoveThrowsIllegalKeyErrorIfKeyIsOfIllegalType()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta->remove(new \stdClass());
     }
 
     //endregion

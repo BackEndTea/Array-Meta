@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BackEndTea\ArrayMeta\Test\Unit\ArrayMeta;
 
 use BackEndTea\ArrayMeta\ArrayMeta;
+use BackEndTea\ArrayMeta\Exception\IllegalKeyException;
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 
 /**
@@ -147,5 +148,41 @@ final class WorksAsAnArrayTest extends \PHPUnit\Framework\TestCase
         $meta = new ArrayMeta($array);
 
         $this->assertSame($array, $meta->toArray());
+    }
+
+    public function testSettingAValueWithAnIllegalKeyTypeThrowsAnIllegalKeyException()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta[new \stdClass()] = 3;
+    }
+
+    public function testCheckingValueWithAnIllegalKeyThrowsAnIllegalKeyException()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        $meta[new \stdClass()];
+    }
+
+    public function testIssetWithAnIllegalKeyThrowsAnIllegalKeyException()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        isset($meta[new \stdClass()]);
+    }
+
+    public function testUnsetWithAnIllegalKeyThrowsAnIllegalKeyException()
+    {
+        $meta = new ArrayMeta();
+
+        $this->expectException(IllegalKeyException::class);
+
+        unset($meta[new \stdClass()]);
     }
 }
