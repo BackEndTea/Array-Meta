@@ -11,7 +11,7 @@ use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 use Countable;
 use IteratorAggregate;
 
-final class ArrayMeta implements
+class ArrayMeta implements
     ArrayAccess,
     Countable,
     IteratorAggregate
@@ -30,24 +30,43 @@ final class ArrayMeta implements
     }
 
     //region Array functions
+
+    /**
+     * @param int|string $key
+     *
+     * @return bool
+     */
     public function offsetExists($key): bool
     {
         return $this->has($key);
     }
 
     /**
+     * @param int|string $key
+     *
      * @throws KeyNotFoundException
+     *
+     * @return mixed
      */
     public function offsetGet($key)
     {
         return $this->get($key);
     }
 
+    /**
+     * @param null|int|string $key
+     * @param mixed           $value
+     *
+     * @throws KeyNotFoundException
+     */
     public function offsetSet($key, $value)
     {
         $this->set($key, $value);
     }
 
+    /**
+     * @param int|string $key
+     */
     public function offsetUnset($key)
     {
         $this->remove($key);
@@ -72,13 +91,22 @@ final class ArrayMeta implements
 
     //region Array Aliases
 
+    /**
+     * @param int|string $key
+     *
+     * @return bool
+     */
     public function has($key): bool
     {
         return isset($this->items[$key]);
     }
 
     /**
+     * @param int|string $key
+     *
      * @throws KeyNotFoundException
+     *
+     * @return mixed
      */
     public function get($key)
     {
@@ -88,6 +116,12 @@ final class ArrayMeta implements
         return $this->items[$key];
     }
 
+    /**
+     * If called with one argument it will assume that it is the value
+     *
+     * @param int|mixed|string $key
+     * @param mixed            $value
+     */
     public function set($key, $value = null)
     {
         if (\func_num_args() === 1) {
@@ -101,6 +135,9 @@ final class ArrayMeta implements
         }
     }
 
+    /**
+     * @param int|string $key
+     */
     public function remove($key)
     {
         unset($this->items[$key]);
@@ -128,6 +165,10 @@ final class ArrayMeta implements
     }
 
     //endregion
+
+    /**
+     * @return mixed
+     */
     public function pop()
     {
         return \array_pop($this->items);
