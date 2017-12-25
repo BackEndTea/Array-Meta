@@ -30,7 +30,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "BackEndTea\\ArrayMeta\\Test\\": "test/"
+      "BackEndTea\\ArrayMeta\\Test\\": "tests/"
     }
   },
   "scripts": {
