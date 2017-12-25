@@ -6,6 +6,7 @@ namespace BackEndTea\ArrayMeta;
 
 use ArrayAccess;
 use ArrayIterator;
+use BackEndTea\ArrayMeta\Exception\IllegalKeyException;
 use BackEndTea\ArrayMeta\Exception\KeyNotFoundException;
 use BackEndTea\ArrayMeta\Exception\ValueNotFoundException;
 use Countable;
@@ -34,6 +35,8 @@ class ArrayMeta implements
     /**
      * @param int|string $key
      *
+     * @throws IllegalKeyException
+     *
      * @return bool
      */
     public function offsetExists($key): bool
@@ -44,6 +47,7 @@ class ArrayMeta implements
     /**
      * @param int|string $key
      *
+     * @throws IllegalKeyException
      * @throws KeyNotFoundException
      *
      * @return mixed
@@ -57,6 +61,7 @@ class ArrayMeta implements
      * @param null|int|string $key
      * @param mixed           $value
      *
+     * @throws IllegalKeyException
      * @throws KeyNotFoundException
      */
     public function offsetSet($key, $value)
@@ -66,6 +71,8 @@ class ArrayMeta implements
 
     /**
      * @param int|string $key
+     *
+     * @throws IllegalKeyException
      */
     public function offsetUnset($key)
     {
@@ -94,22 +101,29 @@ class ArrayMeta implements
     /**
      * @param int|string $key
      *
+     * @throws IllegalKeyException
+     *
      * @return bool
      */
     public function has($key): bool
     {
+        $this->assertKeyIsOfCorrectType($key);
+
         return isset($this->items[$key]);
     }
 
     /**
      * @param int|string $key
      *
+     * @throws IllegalKeyException
      * @throws KeyNotFoundException
      *
      * @return mixed
      */
     public function get($key)
     {
+        $this->assertKeyIsOfCorrectType($key);
+
         if (!$this->has($key)) {
             throw KeyNotFoundException::keyNotFound($key);
         }
@@ -121,6 +135,8 @@ class ArrayMeta implements
      *
      * @param int|mixed|string $key
      * @param mixed            $value
+     *
+     * @throws IllegalKeyException
      */
     public function set($key, $value = null)
     {
@@ -131,15 +147,21 @@ class ArrayMeta implements
         if (\is_null($key)) {
             $this->items[] = $value;
         } else {
+            $this->assertKeyIsOfCorrectType($key);
+
             $this->items[$key] = $value;
         }
     }
 
     /**
      * @param int|string $key
+     *
+     * @throws IllegalKeyException
      */
     public function remove($key)
     {
+        $this->assertKeyIsOfCorrectType($key);
+
         unset($this->items[$key]);
     }
 
@@ -247,5 +269,17 @@ class ArrayMeta implements
     public function reverse(bool $preserveKeys = false): self
     {
         return new self(\array_reverse($this->items, $preserveKeys));
+    }
+
+    /**
+     * @param mixed $key
+     *
+     * @throws IllegalKeyException
+     */
+    private function assertKeyIsOfCorrectType($key)
+    {
+        if (!\is_string($key) && !\is_int($key)) {
+            throw IllegalKeyException::wrongType($key);
+        }
     }
 }
