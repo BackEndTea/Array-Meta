@@ -166,7 +166,7 @@ class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
     public function testRangeThrowsExceptionWhenStepIsStringZero()
     {
         $this->expectException(InvalidArgumentException::class);
-
+        
         ArrayMetaClient::range(1, 10, '0');
     }
 }
