@@ -155,4 +155,18 @@ class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
 
         $this->assertCount(26, $meta);
     }
+
+    public function testRangeThrowsExceptionWhenStepIsZero()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        ArrayMetaClient::range(1, 10, 0);
+    }
+
+    public function testRangeThrowsExceptionWhenStepIsStringZero()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        ArrayMetaClient::range(1, 10, '0');
+    }
 }
