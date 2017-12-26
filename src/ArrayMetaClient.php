@@ -59,7 +59,7 @@ class ArrayMetaClient
      */
     public static function range($start, $end, $step = 1)
     {
-        if (!\is_numeric($step)) {
+        if (!\is_numeric($step) || $step == 0) {
             throw new InvalidArgumentException();
         }
         return new ArrayMeta(\range($start, $end, $step));
