@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BackEndTea\ArrayMeta\Test\Unit;
 
 use BackEndTea\ArrayMeta\ArrayMetaClient;
+use BackEndTea\ArrayMeta\Exception\InvalidArgument\WrongTypeException;
 use InvalidArgumentException;
 
 class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
@@ -52,7 +53,7 @@ class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
      */
     public function testFillWithKeysWillThrowErrorIfKeysAreInvalid($key)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(WrongTypeException::class);
 
         ArrayMetaClient::fillWithKeys($key, 'value');
     }
@@ -131,7 +132,7 @@ class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
 
     public function testRangeThrowsInvalidArgumentErrorWhenStepIsNotNumeric()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(WrongTypeException::class);
 
         ArrayMetaClient::range(1, 10, 'b');
     }
@@ -166,7 +167,7 @@ class ArrayMetaClientTest extends \PHPUnit\Framework\TestCase
     public function testRangeThrowsExceptionWhenStepIsStringZero()
     {
         $this->expectException(InvalidArgumentException::class);
-        
+
         ArrayMetaClient::range(1, 10, '0');
     }
 }
