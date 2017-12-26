@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BackEndTea\ArrayMeta;
 
+use BackEndTea\ArrayMeta\Exception\InvalidArgument\WrongTypeException;
 use InvalidArgumentException;
 
 class ArrayMetaClient
@@ -31,6 +32,7 @@ class ArrayMetaClient
      * @param array|int|string $keys
      * @param mixed            $value
      *
+     * @throws WrongTypeException
      * @throws InvalidArgumentException
      *
      * @return ArrayMeta
@@ -41,7 +43,7 @@ class ArrayMetaClient
             $keys = [$keys];
         }
         if (!\is_array($keys)) {
-            throw new InvalidArgumentException();
+            throw  WrongTypeException::fromType($keys, ['string', 'integer', 'array']);
         }
         try {
             return new ArrayMeta(\array_fill_keys($keys, $value));
@@ -55,11 +57,17 @@ class ArrayMetaClient
      * @param mixed          $end
      * @param null|float|int $step
      *
+     * @throws WrongTypeException
+     * @throws InvalidArgumentException
+     *
      * @return ArrayMeta
      */
     public static function range($start, $end, $step = 1)
     {
-        if (!\is_numeric($step) || $step == 0) {
+        if (!\is_numeric($step)) {
+            throw WrongTypeException::fromType($step, ['integer', 'double']);
+        }
+        if ($step == 0) {
             throw new InvalidArgumentException();
         }
         return new ArrayMeta(\range($start, $end, $step));
